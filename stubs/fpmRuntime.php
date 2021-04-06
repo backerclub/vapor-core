@@ -62,7 +62,11 @@ with(require __DIR__.'/bootstrap/app.php', function ($app) {
 
     fwrite(STDERR, 'Caching Laravel configuration'.PHP_EOL);
 
-    $app->make(ConsoleKernelContract::class)->call('config:cache');
+    try {
+        $app->make(ConsoleKernelContract::class)->call('config:cache');
+    } catch (Throwable $e) {
+        fwrite(STDERR, 'Unable to cache Laravel configuration. '.$e->getMessage().PHP_EOL);
+    }
 });
 
 /*
